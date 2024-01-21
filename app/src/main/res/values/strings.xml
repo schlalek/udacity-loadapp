@@ -11,4 +11,9 @@
     <string name="button_name">Click me</string>
     <string name="button_loading">We are loading </string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="download_glide">Glide picture lib by Bumptech</string>
+    <string name="download_udacity">Udacity starter project</string>
+    <string name="download_retrofit">Retrofit - Android HTTP Lib</string>
+    <string name="download_none">Please select the file to download</string>
+    <string name="channel_name">Download Notifications</string>
 </resources>
