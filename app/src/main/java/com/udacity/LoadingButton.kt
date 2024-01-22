@@ -8,12 +8,14 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.withStyledAttributes
+import timber.log.Timber
 import kotlin.properties.Delegates
 
 
 class LoadingButton @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
+
     private var buttonInProgressColor: Int = 0
     private var buttonIdleColor: Int = 0
     private var inProgressText: String? = null
@@ -28,7 +30,8 @@ class LoadingButton @JvmOverloads constructor(
 
     private var valueAnimator = ValueAnimator()
 
-    var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
+    var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { _p, _old, new ->
+        Timber.d("new ButtonState $new")
         when (new) {
             ButtonState.Clicked -> {
                 currentText = "Clicked"
@@ -40,7 +43,9 @@ class LoadingButton @JvmOverloads constructor(
                 valueAnimator = ValueAnimator.ofFloat(0f, widthSize.toFloat())
                 valueAnimator.setDuration(2000)
                 valueAnimator.addUpdateListener {
+                    Timber.d("animator update. value = ${it.animatedValue} fract = ${it.animatedFraction}")
                     widthProgressSize = it.animatedValue as Float
+                    progressCircle = it.animatedFraction * 360f
                     invalidate()
                 }
                 valueAnimator.repeatMode = ValueAnimator.RESTART
@@ -88,22 +93,26 @@ class LoadingButton @JvmOverloads constructor(
     override fun performClick(): Boolean {
         if (super.performClick()) return true
 
-
-
         return true
     }
 
 
     override fun onDraw(canvas: Canvas?) {
         drawBackground(canvas)
-        drawText(canvas)
         drawProgressBar(canvas)
+        drawText(canvas)
         drawProgressCircle(canvas)
         super.onDraw(canvas)
     }
 
     private fun drawProgressCircle(canvas: Canvas?) {
-        //TODO("Not yet implemented")
+        if (progressCircle == 0f) return
+        paint.color = Color.YELLOW
+        val margin = 10F
+        val size = 50
+        val xPos = widthSize * 0.8f
+        val yPos = (heightSize/2f) - (size/2f)
+        canvas?.drawArc(xPos,yPos,xPos + size,yPos + size,0f,progressCircle,true,paint)
     }
 
     private fun drawProgressBar(canvas: Canvas?) {

@@ -59,8 +59,8 @@
         android:layout_margin="20dp"
         app:buttonIdleColor="@color/colorPrimary"
         app:buttonInProgressColor="@color/colorPrimaryDark"
-        app:idleText="Test"
-        app:inProgressText="Test2"
+        app:idleText="@string/button_download"
+        app:inProgressText="@string/button_loading"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
