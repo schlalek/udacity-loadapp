@@ -17,4 +17,7 @@
     <string name="download_none">Please select the file to download</string>
     <string name="channel_name">Download Notifications</string>
     <string name="button_download">Download</string>
+    <string name="text_file_name">File Name:</string>
+    <string name="text_status">Status:</string>
+    <string name="button_ok">Okay</string>
 </resources>
