@@ -14,6 +14,9 @@ fun NotificationManager.sendNotification(
     status: String,
     applicationContext: Context
 ) {
+    if (!areNotificationsEnabled()) {
+        return
+    }
 
     val contentIntent =
         Intent(applicationContext, DetailActivity::class.java).putExtra("status", status)
@@ -46,7 +49,10 @@ fun NotificationManager.sendNotification(
 
         .setPriority(NotificationCompat.PRIORITY_HIGH)
 
+
     notify(NOTIFICATION_ID, builder.build())
+
+
 }
 
 fun NotificationManager.cancelNotifications() {

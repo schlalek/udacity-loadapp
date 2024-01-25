@@ -1,5 +1,6 @@
 package com.udacity
 
+import android.Manifest
 import android.app.DownloadManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -7,13 +8,19 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.udacity.databinding.ActivityMainBinding
 import timber.log.Timber
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,7 +44,29 @@ class MainActivity : AppCompatActivity() {
             onDownloadClicked()
         }
 
+
     }
+
+    override fun onDestroy() {
+        unregisterReceiver(receiver)
+        super.onDestroy()
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun requestPermission() {
+        val permissionState =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+        // If the permission is not granted, request it.
+        if (permissionState == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                1
+            )
+        }
+    }
+
 
     private fun onDownloadClicked() {
         val udacity_checked = binding.content.radioUdacity.isChecked
@@ -47,6 +76,9 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, R.string.download_none, Toast.LENGTH_SHORT)
                 .show()
         } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requestPermission()
+            }
             val downloadUri: String = if (udacity_checked) {
                 downloadedFile = getString(R.string.download_udacity)
                 URL_UDACITY

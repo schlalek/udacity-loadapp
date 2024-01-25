@@ -49,6 +49,7 @@ class LoadingButton @JvmOverloads constructor(
                     invalidate()
                 }
                 valueAnimator.repeatMode = ValueAnimator.RESTART
+                valueAnimator.repeatCount = ValueAnimator.INFINITE
                 valueAnimator.start()
 
             }
@@ -111,8 +112,8 @@ class LoadingButton @JvmOverloads constructor(
         val margin = 10F
         val size = 50
         val xPos = widthSize * 0.8f
-        val yPos = (heightSize/2f) - (size/2f)
-        canvas?.drawArc(xPos,yPos,xPos + size,yPos + size,0f,progressCircle,true,paint)
+        val yPos = (heightSize / 2f) - (size / 2f)
+        canvas?.drawArc(xPos, yPos, xPos + size, yPos + size, 0f, progressCircle, true, paint)
     }
 
     private fun drawProgressBar(canvas: Canvas?) {
